@@ -3,6 +3,9 @@ import { remote } from 'webdriverio';
 const opts = {
   path: '/wd/hub',
   port: 4723,
+  logLevel: 'error' as const,
+
+  
   capabilities: {
     alwaysMatch: {
       platformName: "Android",
@@ -28,24 +31,32 @@ const opts = {
 
   const btnLogin = await client.$('id=com.libercoop.appliber:id/btn_login');
   await btnLogin.click();
-
   await client.pause(4000);
 
   const btnContacto = await client.$('id=com.libercoop.appliber:id/nav_contacto');
   await btnContacto.click();
-
   await client.pause(3000);
 
-  const btnWhatsapp = await client.$('id=com.libercoop.appliber:id/imageWhatsapp');
-  const visible = await btnWhatsapp.isDisplayed();
+ 
+  const txtSuperior = await client.$('id=com.libercoop.appliber:id/txtMensajeSuperior');
+  const textoSuperior = await txtSuperior.getText();
+  console.log('Texto superior:', textoSuperior);
 
-  if (visible) {
-    console.log('✅ Botón de WhatsApp visible. Intentando abrir conversación...');
-    await btnWhatsapp.click();
-  } else {
-    console.log('❌ Botón de WhatsApp no visible.');
-  }
 
-  await client.pause(5000);
+  const txtInferior = await client.$('android=new UiSelector().text("Presiona este icono para iniciar una conversación por WhatsApp con uno de nuestres ejecutivos.")');
+  const visibleInferior = await txtInferior.isDisplayed();
+
+  console.log('\nVerificación:');
+  console.log('✅ Texto superior visible:', textoSuperior.trim().length > 0);
+  console.log('✅ Texto inferior visible:', visibleInferior);
+
+  const btnSalir = await client.$('id=com.libercoop.appliber:id/txtSalir');
+  await btnSalir.click();
+  const confirmar = await client.$('id=com.libercoop.appliber:id/confirm_button');
+  await confirmar.click();
+
+  const volver = await client.$('id=com.libercoop.appliber:id/textviewCambioUsuario');
+  await volver.click();
+
   await client.deleteSession();
 })();
