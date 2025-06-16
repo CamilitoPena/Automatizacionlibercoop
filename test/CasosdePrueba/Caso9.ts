@@ -5,6 +5,8 @@ import * as cheerio from 'cheerio';
 const opts = {
   path: '/wd/hub',
   port: 4723,
+  logLevel: 'error' as const,
+
   capabilities: {
     alwaysMatch: {
       platformName: "Android",

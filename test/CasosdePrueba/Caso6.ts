@@ -3,6 +3,8 @@ import { remote } from 'webdriverio';
 const opts = {
   path: '/wd/hub',
   port: 4723,
+  logLevel: 'error' as const,
+
   capabilities: {
     alwaysMatch: {
       platformName: "Android",
